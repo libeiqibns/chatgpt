@@ -9,12 +9,23 @@ def encode_image(image_path):
         dataurl = f'data:image/{ext};base64,{base64_utf8_str}'
     return dataurl
 
-def generate_vision_prompts(image_folder):
+def get_image_text(image_text_path):
+    text = ''
+    with open(image_text_path, 'r') as text_file:
+        text = text_file.read()
+    return text
+
+def generate_prompts(image_folder, image_text_folder):
     vision_prompts = list()
 
     # Getting the base64 string
     image_list = os.listdir(image_folder)
     for image in image_list:
+        prefix = image.split('.')[0]
+        image_text_file = prefix + '.txt'
+        image_text_path = os.path.join(image_text_folder, image_text_file)
+        image_text = get_image_text(image_text_path)
+
         image_path = os.path.join(image_folder, image)
         base64_image_url = encode_image(image_path)
 
@@ -25,7 +36,7 @@ def generate_vision_prompts(image_folder):
         image_content =  [
             {
                 "type": "text",
-                "text": "What is in the image?",
+                "text": image_text,
             },
             {
                 "type": "image_url",

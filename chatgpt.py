@@ -1,7 +1,7 @@
 from openai import OpenAI
 import questions
-import questions.generate_math
-import questions.generate_vision
+import questions.generate_plain_text
+import questions.generate_text_and_vision
 
 client = OpenAI()
 
@@ -10,8 +10,8 @@ messages = [
 ]
 
 prompts = list(dict())
-prompts.extend(questions.generate_math.generate_math_prompts())
-prompts.extend(questions.generate_vision.generate_vision_prompts('images'))
+prompts.extend(questions.generate_plain_text.generate_prompts())
+prompts.extend(questions.generate_text_and_vision.generate_prompts('images', 'image_texts'))
 
 i=0
 
